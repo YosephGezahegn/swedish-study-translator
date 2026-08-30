@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Svenska Study Translator — Settings</title>
+  <link rel="stylesheet" href="panel.css" />
+  <style>
+    body { max-width: 620px; margin: 0 auto; padding: 24px; }
+    label { display: block; margin-top: 14px; font-weight: 600; font-size: 13px; }
+    input, select { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: inherit; font: inherit; margin-top: 4px; }
+    .hint { color: var(--muted); font-size: 12px; margin-top: 4px; }
+    fieldset { border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px 18px; margin-top: 18px; }
+    legend { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+    .check { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-weight: 600; font-size: 13px; }
+    .check input { width: auto; margin: 0; }
+  </style>
+</head>
+<body>
+  <h1>Svenska Study Translator</h1>
+  <p class="hint">Keys are stored in Chrome's synced extension storage and are sent only to the provider you pick.</p>
+
+  <label for="provider">Preferred provider</label>
+  <select id="provider">
+    <option value="openrouter">OpenRouter</option>
+    <option value="gemini">Google AI Studio (Gemini)</option>
+  </select>
+
+  <div class="check">
+    <input type="checkbox" id="fallback" />
+    <label for="fallback" style="margin:0">Fall back to the other provider on failure</label>
+  </div>
+
+  <fieldset>
+    <legend>OpenRouter</legend>
+    <label for="openrouterKey">API key</label>
+    <input type="password" id="openrouterKey" placeholder="sk-or-v1-…" autocomplete="off" />
+    <p class="hint">Create one at openrouter.ai/keys</p>
+    <label for="openrouterModel">Model</label>
+    <input type="text" id="openrouterModel" placeholder="google/gemini-2.5-flash" />
+  </fieldset>
+
+  <fieldset>
+    <legend>Google AI Studio</legend>
+    <label for="geminiKey">API key</label>
+    <input type="password" id="geminiKey" placeholder="AIza…" autocomplete="off" />
+    <p class="hint">Create one at aistudio.google.com/apikey</p>
+    <label for="geminiModel">Model</label>
+    <input type="text" id="geminiModel" placeholder="gemini-2.5-flash" />
+  </fieldset>
+
+  <label for="targetLanguage">Explain in</label>
+  <input type="text" id="targetLanguage" placeholder="English" />
+
+  <div class="row" style="margin-top:18px">
+    <button id="save" class="primary">Save</button>
+    <button id="test">Test connection</button>
+  </div>
+  <p id="status" class="status" hidden></p>
+
+  <script type="module" src="options.js"></script>
+</body>
+</html>

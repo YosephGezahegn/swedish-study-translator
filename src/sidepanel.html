@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Svenska Study Translator</title>
+  <link rel="stylesheet" href="panel.css" />
+</head>
+<body>
+  <header>
+    <h1>Svenska<span>Study</span></h1>
+    <a id="settings" href="options.html" target="_blank" title="Settings">⚙</a>
+  </header>
+
+  <section class="input">
+    <textarea id="text" rows="3" placeholder="Select text on a page or in a PDF and right-click → Explain… or paste it here."></textarea>
+    <div class="row">
+      <button id="run" class="primary">Explain</button>
+      <button id="clear">Clear</button>
+    </div>
+  </section>
+
+  <p id="status" class="status" hidden></p>
+  <div id="result" hidden></div>
+
+  <details id="history-wrap">
+    <summary>Recent lookups</summary>
+    <ul id="history"></ul>
+  </details>
+
+  <script type="module" src="sidepanel.js"></script>
+</body>
+</html>
