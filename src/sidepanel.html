@@ -13,11 +13,24 @@
 
   <section class="input">
     <textarea id="text" rows="3" placeholder="Select text on a page or in a PDF and right-click → Explain… or paste it here."></textarea>
+
+    <figure id="shot" class="shot" hidden>
+      <img id="shot-img" alt="The picture to read" />
+      <button id="shot-clear" class="shot-clear" title="Remove the picture">×</button>
+      <figcaption id="shot-note" class="meta"></figcaption>
+    </figure>
+
     <div class="row">
       <button id="run" class="primary">Explain</button>
+      <button id="pick">Picture…</button>
       <button id="clear">Clear</button>
     </div>
+    <p class="hint">Drop or paste a picture to read the Swedish in it, or press
+      <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> on a page to drag over an area.</p>
+    <input type="file" id="file" accept="image/*" hidden />
   </section>
+
+  <div id="drop" class="drop" hidden>Drop the picture to read it</div>
 
   <p id="status" class="status" hidden></p>
   <div id="result" hidden></div>

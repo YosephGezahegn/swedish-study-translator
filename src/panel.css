@@ -66,3 +66,36 @@ li { margin-bottom: 4px; }
 #history-wrap { margin-top: 14px; font-size: 13px; color: var(--muted); }
 #history li { cursor: pointer; }
 #history li:hover { color: var(--fg); text-decoration: underline; }
+
+/* --- pictures --------------------------------------------------------- */
+.hint { color: var(--muted); font-size: 12px; margin: 8px 0 0; }
+kbd {
+  font: 600 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px;
+  padding: 2px 4px; background: var(--card);
+}
+.shot {
+  position: relative; margin: 8px 0 0; padding: 6px;
+  border: 1px solid var(--line); border-radius: 10px; background: var(--card);
+}
+.shot img {
+  display: block; width: 100%; max-height: 220px;
+  object-fit: contain; border-radius: 6px; background: #fff;
+}
+.shot figcaption { margin-top: 6px; }
+.shot-clear {
+  position: absolute; top: 10px; right: 10px;
+  width: 24px; height: 24px; padding: 0; line-height: 1;
+  border-radius: 50%; font-size: 15px;
+  background: var(--bg); opacity: .85;
+}
+.source { white-space: pre-wrap; font-weight: 500; }
+.drop {
+  position: fixed; inset: 8px; z-index: 10;
+  display: grid; place-items: center;
+  /* display on the class would otherwise beat the hidden attribute. */
+  border: 2px dashed var(--accent); border-radius: 12px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  color: var(--muted); font-weight: 600; pointer-events: none;
+}
+.drop[hidden] { display: none; }

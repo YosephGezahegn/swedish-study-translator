@@ -1,4 +1,5 @@
 import { buildMessages } from "./prompt.js";
+import { splitDataUrl } from "./image.js";
 
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 const GEMINI_URL = (model) =>
@@ -37,7 +38,7 @@ function extractJson(raw) {
   }
 }
 
-async function callOpenRouter({ system, user, settings, signal }) {
+async function callOpenRouter({ system, user, image, settings, signal }) {
   const key = settings.openrouterKey;
   if (!key) throw new ProviderError("No OpenRouter API key saved.", { provider: "openrouter" });
 
@@ -55,7 +56,15 @@ async function callOpenRouter({ system, user, settings, signal }) {
       response_format: { type: "json_object" },
       messages: [
         { role: "system", content: system },
-        { role: "user", content: user }
+        {
+          role: "user",
+          content: image
+            ? [
+                { type: "text", text: user },
+                { type: "image_url", image_url: { url: image } }
+              ]
+            : user
+        }
       ]
     })
   });
@@ -71,11 +80,16 @@ async function callOpenRouter({ system, user, settings, signal }) {
   return extractJson(data?.choices?.[0]?.message?.content);
 }
 
-async function callGemini({ system, user, settings, signal }) {
+async function callGemini({ system, user, image, settings, signal }) {
   const key = settings.geminiKey;
   if (!key) throw new ProviderError("No Google AI Studio API key saved.", { provider: "gemini" });
 
   const model = settings.geminiModel || DEFAULTS.geminiModel;
+  const parts = [{ text: user }];
+  if (image) {
+    const { mime, base64 } = splitDataUrl(image);
+    parts.push({ inlineData: { mimeType: mime, data: base64 } });
+  }
   const res = await fetch(GEMINI_URL(model), {
     method: "POST",
     signal,
@@ -85,7 +99,7 @@ async function callGemini({ system, user, settings, signal }) {
     },
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: system }] },
-      contents: [{ role: "user", parts: [{ text: user }] }],
+      contents: [{ role: "user", parts }],
       generationConfig: { temperature: 0.2, responseMimeType: "application/json" }
     })
   });
@@ -107,12 +121,18 @@ const CALLERS = { openrouter: callOpenRouter, gemini: callGemini };
 /**
  * Runs the analysis against the preferred provider, falling back to the other
  * one when the first is unconfigured or fails (rate limits, outages).
+ *
+ * `image` is an optional base64 data URL. When present the model reads the
+ * Swedish out of the picture itself and returns the transcription alongside the
+ * usual breakdown, so the chosen model has to be a vision model — both defaults
+ * are.
  */
-export async function analyse({ text, context, settings, signal }) {
+export async function analyse({ text, context, image, settings, signal }) {
   const merged = { ...DEFAULTS, ...settings };
   const { system, user } = buildMessages({
     text,
     context,
+    image: Boolean(image),
     targetLanguage: merged.targetLanguage
   });
 
@@ -122,7 +142,7 @@ export async function analyse({ text, context, settings, signal }) {
   let lastError;
   for (const name of tried) {
     try {
-      const result = await CALLERS[name]({ system, user, settings: merged, signal });
+      const result = await CALLERS[name]({ system, user, image, settings: merged, signal });
       return { result, provider: name, fellBack: name !== order[0] };
     } catch (err) {
       if (err.name === "AbortError") throw err;
