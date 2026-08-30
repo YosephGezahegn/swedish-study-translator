@@ -13,6 +13,17 @@ full grammatical breakdown in the side panel.
 - Idioms and fixed expressions called out separately
 - A rough CEFR level and fresh practice sentences reusing the new vocabulary
 
+### Exam-oriented extras
+
+Three fields aimed at a B1 candidate rather than a casual reader — the things a
+test marks down that a plain translation never shows:
+
+| Shown as | What it tells you |
+| --- | --- |
+| A grey pill beside the CEFR badge, and beside a word's grammar bits | **Register.** Whether the passage or the word is formal, informal, spoken, slang or dated. Neutral Swedish is left unlabelled, so a pill always means "this would stand out". |
+| An amber ⚠ line under a word | **False friend.** The word resembles one in your target language or in Finnish but means something else — _rolig_ is fun, not a role; _glass_ is ice cream. Only genuine traps are flagged. |
+| A **Say it at B1** card | **Upgrades.** A2 words that actually appear in the passage, paired with a B1 alternative — _bra → utmärkt_, _sa → berättade_ — with a note on when the stronger word fits. Empty when the passage is already at B1. |
+
 ## Reading text in pictures
 
 Swedish that is not selectable text — a photographed page, a screenshot, a sign,

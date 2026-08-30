@@ -81,6 +81,7 @@ function render(data, meta) {
   const tags = el("div", "meta");
   tags.style.marginTop = "8px";
   if (data.cefr) tags.appendChild(el("span", "badge", data.cefr));
+  if (data.register) tags.appendChild(el("span", "tag", data.register));
   tags.appendChild(
     el("span", null, `  ${meta.provider}${meta.fellBack ? " (fallback)" : ""}`)
   );
@@ -99,7 +100,14 @@ function render(data, meta) {
       const right = el("td");
       right.appendChild(el("div", null, item.meaning ?? ""));
       const bits = [item.lemma, item.pos, item.form].filter(Boolean).join(" · ");
-      if (bits) right.appendChild(el("div", "meta", bits));
+      if (bits || item.register) {
+        const line = el("div", "meta", bits);
+        // Register rides on the same line as the grammar bits: it is one more
+        // fact about the word, not a warning.
+        if (item.register) line.appendChild(el("span", "tag", item.register));
+        right.appendChild(line);
+      }
+      if (item.false_friend) right.appendChild(el("div", "warn", item.false_friend));
       if (item.note) right.appendChild(el("div", "meta", item.note));
       tr.append(left, right);
       table.appendChild(tr);
@@ -123,6 +131,22 @@ function render(data, meta) {
       list.appendChild(li);
     });
     els.result.appendChild(card("Expressions", list));
+  }
+
+  if (Array.isArray(data.upgrades) && data.upgrades.length) {
+    const box = el("div");
+    data.upgrades.forEach((u) => {
+      const row = el("div", "up");
+      const line = el("div");
+      line.appendChild(el("span", "up-basic", u.basic ?? ""));
+      line.appendChild(el("span", "up-arrow", " → "));
+      line.appendChild(el("span", "tok", u.better ?? ""));
+      if (u.en) line.appendChild(el("span", "meta", `  ${u.en}`));
+      row.appendChild(line);
+      if (u.note) row.appendChild(el("div", "meta", u.note));
+      box.appendChild(row);
+    });
+    els.result.appendChild(card("Say it at B1", box));
   }
 
   if (Array.isArray(data.examples) && data.examples.length) {

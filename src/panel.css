@@ -60,6 +60,18 @@ li { margin-bottom: 4px; }
   display: inline-block; font-size: 11px; padding: 1px 7px; border-radius: 999px;
   background: var(--accent); color: var(--accent-fg); font-weight: 600;
 }
+.tag {
+  display: inline-block; margin-left: 6px; font-size: 11px; padding: 1px 6px;
+  border: 1px solid var(--line); border-radius: 999px; color: var(--muted);
+  text-transform: lowercase;
+}
+.warn { font-size: 12px; margin-top: 2px; color: #b3541e; }
+@media (prefers-color-scheme: dark) { .warn { color: #eaa06a; } }
+.warn::before { content: "⚠ "; }
+.up { margin-bottom: 8px; }
+.up:last-child { margin-bottom: 0; }
+.up-basic { color: var(--muted); text-decoration: line-through; }
+.up-arrow { color: var(--muted); }
 .ex { margin-bottom: 8px; }
 .ex .sv { font-weight: 500; }
 .ex .en { color: var(--muted); }
